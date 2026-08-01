@@ -1,0 +1,14 @@
+import math
+
+# Number of Playfair keys
+keys = math.factorial(25)
+
+# Equivalent power of 2
+power = math.log2(keys)
+
+print("Number of possible Playfair keys =", keys)
+print("Approximate power of 2 = 2^", round(power, 2))
+
+OUTPUT:
+Number of possible Playfair keys = 15511210043330985984000000
+Approximate power of 2 = 2^ 83.68
