@@ -1,0 +1,22 @@
+import string
+
+plaintext = input("Enter plaintext: ")
+
+# Substitution key
+key = "QWERTYUIOPASDFGHJKLZXCVBNM"
+
+ciphertext = ""
+
+for ch in plaintext:
+    if ch.isupper():
+        ciphertext += key[ord(ch) - ord('A')]
+    elif ch.islower():
+        ciphertext += key[ord(ch.upper()) - ord('A')].lower()
+    else:
+        ciphertext += ch
+
+print("Ciphertext:", ciphertext)
+
+OUTPUT:
+Enter plaintext: helloworld
+Ciphertext: itssgvgksr
