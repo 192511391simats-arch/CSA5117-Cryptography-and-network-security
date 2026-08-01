@@ -1,0 +1,72 @@
+from collections import Counter
+
+# English letter frequency order
+english_freq = "ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+def decrypt(ciphertext, key):
+    plaintext = ""
+
+    for ch in ciphertext:
+        if ch.isalpha():
+            p = (ord(ch.upper()) - ord('A') - key) % 26
+            plaintext += chr(p + ord('A'))
+        else:
+            plaintext += ch
+
+    return plaintext
+
+def score_text(text):
+    freq = Counter(ch for ch in text if ch.isalpha())
+
+    sorted_letters = ''.join(
+        [item[0] for item in freq.most_common()]
+    )
+
+    score = 0
+
+    for i, letter in enumerate(sorted_letters):
+        if letter in english_freq:
+            score += (26 - abs(i - english_freq.index(letter)))
+
+    return score
+
+ciphertext = input("Enter ciphertext: ").upper()
+top_n = int(input("How many possible plaintexts? "))
+
+results = []
+
+for key in range(26):
+    plain = decrypt(ciphertext, key)
+    score = score_text(plain)
+
+    results.append((score, key, plain))
+
+# Sort by likelihood
+results.sort(reverse=True)
+
+print("\nMost Likely Plaintexts:\n")
+
+for i in range(min(top_n, len(results))):
+    score, key, plain = results[i]
+
+    print(f"Rank {i+1}")
+    print(f"Key = {key}")
+    print(f"Plaintext = {plain}")
+    print(f"Score = {score}")
+    print("-" * 40)
+
+OUTPUT:
+Enter ciphertext: hello everyone
+How many possible plaintexts? 2
+
+Most Likely Plaintexts:
+
+Rank 1
+Key = 0
+Plaintext = HELLO EVERYONE
+Score = 162
+----------------------------------------
+Rank 2
+Key = 11
+Plaintext = WTAAD TKTGNDCT
+Score = 155
