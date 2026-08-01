@@ -1,0 +1,28 @@
+def affine_decrypt(ciphertext):
+    a_inv = 9      # inverse of 3 mod 26
+    b = 15
+
+    plaintext = ""
+
+    for ch in ciphertext.upper():
+        if ch.isalpha():
+            c = ord(ch) - ord('A')
+
+            # P = a_inv * (C - b) mod 26
+            p = (a_inv * (c - b)) % 26
+
+            plaintext += chr(p + ord('A'))
+        else:
+            plaintext += ch
+
+    return plaintext
+
+
+ciphertext = input("Enter Ciphertext: ")
+
+plaintext = affine_decrypt(ciphertext)
+
+print("Decrypted Text:", plaintext)
+OUTPUT:
+Enter Ciphertext: HELLO EVERYONE
+Decrypted Text: GFQQR FCFSDRIF
