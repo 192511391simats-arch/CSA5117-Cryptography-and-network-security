@@ -1,0 +1,70 @@
+def generate_matrix(key):
+    key = key.upper().replace('J', 'I')
+    matrix = []
+    used = set()
+
+    for ch in key:
+        if ch.isalpha() and ch not in used:
+            matrix.append(ch)
+            used.add(ch)
+
+    for ch in "ABCDEFGHIKLMNOPQRSTUVWXYZ":
+        if ch not in used:
+            matrix.append(ch)
+
+    return [matrix[i:i+5] for i in range(0, 25, 5)]
+
+
+def find_position(matrix, ch):
+    if ch == 'J':
+        ch = 'I'
+
+    for i in range(5):
+        for j in range(5):
+            if matrix[i][j] == ch:
+                return i, j
+
+
+def encrypt_pair(matrix, a, b):
+    r1, c1 = find_position(matrix, a)
+    r2, c2 = find_position(matrix, b)
+
+    if r1 == r2:
+        return matrix[r1][(c1 + 1) % 5] + matrix[r2][(c2 + 1) % 5]
+
+    elif c1 == c2:
+        return matrix[(r1 + 1) % 5][c1] + matrix[(r2 + 1) % 5][c2]
+
+    else:
+        return matrix[r1][c2] + matrix[r2][c1]
+
+
+key = input("Enter keyword: ")
+matrix = generate_matrix(key)
+
+print("\nPlayfair Matrix:")
+for row in matrix:
+    print(" ".join(row))
+
+plaintext = input("\nEnter plaintext (even letters): ").upper()
+plaintext = plaintext.replace("J", "I")
+
+ciphertext = ""
+
+for i in range(0, len(plaintext), 2):
+    ciphertext += encrypt_pair(matrix, plaintext[i], plaintext[i+1])
+
+print("Ciphertext:", ciphertext)
+
+OUTPUT:
+Enter keyword: hello world
+
+Playfair Matrix:
+H E L O W
+R D A B C
+F G I K M
+N P Q S T
+U V X Y Z
+
+Enter plaintext (even letters): neso
+Ciphertext: PHYB
